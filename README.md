@@ -18,5 +18,51 @@ KeePassSharedDatabasePlugin adds a custom Trigger Action that allows users to op
 2. Ensure each entry in the group contains the `db_path` custom string property, pointing to the shared database.
 3. Configure the Trigger Action to use this tag to automatically search and open databases.
 
+
+## Configuration
+
+The plugin does nothing on its own and requires a trigger be configured in order to open any shared databases.
+
+### Example Trigger
+
+The following example trigger will open shared databases in the group tagged with `SHARED_GROUP` upon opening a database whose name matches the current user's username:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<TriggerCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Triggers>
+        <Trigger>
+            <Guid>UtMRD9sIA0yRI9r5k1rrvA==</Guid>
+            <Name>Auto-Open Shared Databases</Name>
+            <Events>
+                <Event>
+                    <TypeGuid>5f8TBoW4QYm5BvaeKztApw==</TypeGuid>
+                    <Parameters>
+                        <Parameter>3</Parameter>
+                        <Parameter>%USERNAME%.kdbx</Parameter>
+                    </Parameters>
+                </Event>
+            </Events>
+            <Conditions />
+            <Actions>
+                <Action>
+                    <TypeGuid>VOK1miBoR/299B1UelKmTQ==</TypeGuid>
+                    <Parameters>
+                        <Parameter>SHARED_GROUP</Parameter>
+                    </Parameters>
+                </Action>
+                <Action>
+                    <TypeGuid>P7gzLdYWToeZBWTbFkzWJg==</TypeGuid>
+                    <Parameters>
+                        <Parameter />
+                        <Parameter>1</Parameter>
+                    </Parameters>
+                </Action>
+            </Actions>
+        </Trigger>
+    </Triggers>
+</TriggerCollection>
+```
+
 ## License
 This project is licensed under the MIT License.
