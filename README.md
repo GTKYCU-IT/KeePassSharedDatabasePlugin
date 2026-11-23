@@ -146,11 +146,19 @@ The build stops with a clear error if `KeePass.exe` isn't found.
 
 ## Releasing
 
-1. Update `<Version>` in `KeePassSharedDatabasePlugin.csproj` and add an entry to `CHANGELOG.md`.
-2. Run `dotnet build -c Release`.
-3. Run the [manual test checklist](#manual-test-checklist) against the new DLL.
-4. Tag `vX.Y.Z.W` (matching `<Version>`) and publish a GitHub Release with `KeePassSharedDatabasePlugin.dll` attached. Use the CHANGELOG entry as the release notes.
-5. Deploy. GTKYCU staff: follow the Confluence runbook.
+1. On a branch, update `<Version>` in `KeePassSharedDatabasePlugin.csproj` and add an entry to `CHANGELOG.md`. Merge the change to `master` through a PR.
+2. Build from the merged `master`, in a clean checkout (`git status` shows nothing to commit):
+   ```powershell
+   Remove-Item -Recurse -Force bin, obj -ErrorAction SilentlyContinue
+   dotnet build -c Release
+   git rev-parse HEAD    # full commit SHA, used in step 4
+   ```
+3. Run the [manual test checklist](#manual-test-checklist) against **that** DLL. Don't rebuild afterwards: the bytes you tested are the bytes you publish.
+4. Publish, pinned to the commit you built. `--target` needs the full 40-character SHA. Without it, GitHub tags whatever `master` points to at that moment.
+   ```powershell
+   gh release create vX.Y.Z.W bin\Release\net481\KeePassSharedDatabasePlugin.dll --target <full SHA> --title vX.Y.Z.W --notes "<CHANGELOG entry>"
+   ```
+5. Download the release asset, and confirm both that its SHA-256 equals your local build and that `git rev-list -n 1 vX.Y.Z.W` equals the SHA you built. Deploy the downloaded file. GTKYCU staff: the Confluence runbook has a script that does this check, and the deployment steps.
 
 ## Manual test checklist
 
