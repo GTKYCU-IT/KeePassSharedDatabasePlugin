@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test-only enforced configuration for a portable KeePass copy. See README "Manual test checklist". -->
+<Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Integration>
+		<!-- Keep this copy separate from a normal KeePass already running on the machine.
+		     Without this, the file is handed to the running KeePass and this copy exits. -->
+		<LimitToSingleInstance>false</LimitToSingleInstance>
+	</Integration>
+	<Application>
+		<Start>
+			<CheckForUpdate>false</CheckForUpdate>
+			<CheckForUpdateConfigured>true</CheckForUpdateConfigured>
+		</Start>
+		<TriggerSystem>
+			<Enabled>true</Enabled>
+			<Triggers>
+				<Trigger>
+					<Guid>dGVzdC1maXh0dXJlLXRyZw==</Guid>
+					<Name>Auto-Open Shared Databases (test)</Name>
+					<Events>
+						<Event>
+							<!-- Opened database file; 3 = ends with -->
+							<TypeGuid>5f8TBoW4QYm5BvaeKztApw==</TypeGuid>
+							<Parameters>
+								<Parameter>3</Parameter>
+								<Parameter>personal-test.kdbx</Parameter>
+							</Parameters>
+						</Event>
+					</Events>
+					<Conditions />
+					<Actions>
+						<Action>
+							<!-- Open Shared Databases (this plugin) -->
+							<TypeGuid>VOK1miBoR/299B1UelKmTQ==</TypeGuid>
+							<Parameters>
+								<Parameter>SHARED_GROUP</Parameter>
+							</Parameters>
+						</Action>
+						<Action>
+							<!-- Activate database (select tab) -->
+							<TypeGuid>P7gzLdYWToeZBWTbFkzWJg==</TypeGuid>
+							<Parameters>
+								<Parameter />
+								<Parameter>1</Parameter>
+							</Parameters>
+						</Action>
+					</Actions>
+				</Trigger>
+			</Triggers>
+		</TriggerSystem>
+	</Application>
+</Configuration>
